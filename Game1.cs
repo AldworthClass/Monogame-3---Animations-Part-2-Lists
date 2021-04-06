@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Monogame_3___Animations_Part_2_Lists
 {
@@ -10,14 +11,13 @@ namespace Monogame_3___Animations_Part_2_Lists
         private SpriteBatch _spriteBatch;
 
         Texture2D tribbleBrownTexture;
-
         Texture2D tribbleCreamTexture;
-
         Texture2D tribbleGreyTexture;
-        Rectangle tribbleGreyRect;
-        Vector2 tribbleGreySpeed;
-
         Texture2D tribbleOrangeTexture;
+
+        List<Rectangle> tribbleRects;
+        List<Texture2D> tribbleTextures;
+        List<Vector2> tribbleSpeeds;
 
         public Game1()
         {
@@ -34,8 +34,12 @@ namespace Monogame_3___Animations_Part_2_Lists
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            tribbleGreyRect = new Rectangle(300, 10, 100, 100);
-            tribbleGreySpeed = new Vector2(2, 0);
+            tribbleRects = new List<Rectangle>();
+            tribbleTextures = new List<Texture2D>();
+            tribbleSpeeds = new List<Vector2>();
+
+            //tribbleGreyRect = new Rectangle(300, 10, 100, 100);
+         
 
             base.Initialize();
         }
@@ -49,6 +53,9 @@ namespace Monogame_3___Animations_Part_2_Lists
             tribbleBrownTexture = Content.Load<Texture2D>("tribbleBrown");
             tribbleCreamTexture = Content.Load<Texture2D>("tribbleCream");
             tribbleOrangeTexture = Content.Load<Texture2D>("tribbleOrange");
+
+            // Create a list of tribbles
+            tribbleRects.Add(new Rectangle(300, 10, 100, 100););
         }
 
         protected override void Update(GameTime gameTime)
