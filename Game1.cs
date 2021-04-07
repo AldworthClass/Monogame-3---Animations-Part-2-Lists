@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+
 
 namespace Monogame_3___Animations_Part_2_Lists
 {
@@ -10,14 +12,16 @@ namespace Monogame_3___Animations_Part_2_Lists
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        Random generator;
+
         Texture2D tribbleBrownTexture;
         Texture2D tribbleCreamTexture;
         Texture2D tribbleGreyTexture;
         Texture2D tribbleOrangeTexture;
 
-        List<Rectangle> tribbleRects;
         List<Texture2D> tribbleTextures;
-        List<Vector2> tribbleSpeeds;
+
+        List <Tribble> tribbles;
 
         public Game1()
         {
@@ -34,14 +38,27 @@ namespace Monogame_3___Animations_Part_2_Lists
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            tribbleRects = new List<Rectangle>();
-            tribbleTextures = new List<Texture2D>();
-            tribbleSpeeds = new List<Vector2>();
-
-            //tribbleGreyRect = new Rectangle(300, 10, 100, 100);
-         
+            generator = new Random();
 
             base.Initialize();
+
+            tribbles = new List<Tribble>();
+            tribbleTextures = new List<Texture2D>(){
+                tribbleBrownTexture, 
+                tribbleCreamTexture, 
+                tribbleGreyTexture, 
+                tribbleOrangeTexture
+            };
+         
+            for (int i = 0; i < 20; i++)
+            {
+                int size = generator.Next(50, 100);
+                tribbles.Add(new Tribble(tribbleTextures[generator.Next(tribbleTextures.Count)], new Rectangle(generator.Next(_graphics.PreferredBackBufferWidth - size), generator.Next(_graphics.PreferredBackBufferHeight - size), size, size), new Vector2(generator.Next(-2, 3), generator.Next(-2, 3))));
+            }
+            
+            
+
+
         }
 
         protected override void LoadContent()
@@ -55,7 +72,8 @@ namespace Monogame_3___Animations_Part_2_Lists
             tribbleOrangeTexture = Content.Load<Texture2D>("tribbleOrange");
 
             // Create a list of tribbles
-            tribbleRects.Add(new Rectangle(300, 10, 100, 100););
+            
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -64,13 +82,18 @@ namespace Monogame_3___Animations_Part_2_Lists
                 Exit();
 
             // TODO: Add your update logic here
-            tribbleGreyRect.X += (int)tribbleGreySpeed.X;
-            tribbleGreyRect.Y += (int)tribbleGreySpeed.Y;
+            foreach(Tribble tribble in tribbles)
+            {
+                tribble._rect.X += (int)tribble._speed.X;
+                tribble._rect.Y += (int)tribble._speed.Y;
+                if (tribble._rect.Right > _graphics.PreferredBackBufferWidth || tribble._rect.X < 0)
+                    tribble._speed.X *= -1;
+                if (tribble._rect.Bottom > _graphics.PreferredBackBufferHeight || tribble._rect.Y < 0)
+                    tribble._speed.Y *= -1;
 
-            if (tribbleGreyRect.Right > _graphics.PreferredBackBufferWidth || tribbleGreyRect.X < 0)
-                tribbleGreySpeed.X *= -1;
-            if (tribbleGreyRect.Bottom > _graphics.PreferredBackBufferHeight || tribbleGreyRect.Top < 0)
-                tribbleGreySpeed.Y *= -1;
+            }
+            
+            
 
             base.Update(gameTime);
         }
@@ -81,7 +104,9 @@ namespace Monogame_3___Animations_Part_2_Lists
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);
+            foreach(Tribble tribble in tribbles)    
+                _spriteBatch.Draw(tribble.Texture, tribble._rect, Color.White);
+            
             _spriteBatch.End();
 
             base.Draw(gameTime);
