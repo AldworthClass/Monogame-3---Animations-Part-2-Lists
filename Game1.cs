@@ -14,12 +14,15 @@ namespace Monogame_3___Animations_Part_2_Lists
 
         Random generator;
 
+        MouseState mouseState;
+
         Screen screen;
 
         Texture2D tribbleBrownTexture;
         Texture2D tribbleCreamTexture;
         Texture2D tribbleGreyTexture;
         Texture2D tribbleOrangeTexture;
+        Texture2D tribbleIntroTexture;
 
         List<Texture2D> tribbleTextures; // To be used to select a random tribble
 
@@ -81,26 +84,38 @@ namespace Monogame_3___Animations_Part_2_Lists
             tribbleBrownTexture = Content.Load<Texture2D>("tribbleBrown");
             tribbleCreamTexture = Content.Load<Texture2D>("tribbleCream");
             tribbleOrangeTexture = Content.Load<Texture2D>("tribbleOrange");
-
+            tribbleIntroTexture = Content.Load<Texture2D>("tribble_intro");
             // Create a list of tribbles
-            
+
 
         }
 
         protected override void Update(GameTime gameTime)
         {
+            mouseState = Mouse.GetState();
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-            foreach(Tribble tribble in tribbles)
+            if (screen == Screen.Intro)
             {
-                tribble.move();
-                if (tribble.Bounds.Right > _graphics.PreferredBackBufferWidth || tribble.Bounds.Left < 0)
-                    tribble.bumpSide();
-                if (tribble.Bounds.Bottom > _graphics.PreferredBackBufferHeight || tribble.Bounds.Top < 0)
-                    tribble.bumpTopBottom();
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                    screen = Screen.TribbleYard;
             }
+            else if (screen == Screen.TribbleYard)
+            {
+                foreach (Tribble tribble in tribbles)
+                {
+                    tribble.move();
+                    if (tribble.Bounds.Right > _graphics.PreferredBackBufferWidth || tribble.Bounds.Left < 0)
+                        tribble.bumpSide();
+                    if (tribble.Bounds.Bottom > _graphics.PreferredBackBufferHeight || tribble.Bounds.Top < 0)
+                        tribble.bumpTopBottom();
+                }
+            }
+
+            // TODO: Add your update logic here
+            
             
        
 
@@ -113,9 +128,18 @@ namespace Monogame_3___Animations_Part_2_Lists
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            foreach(Tribble tribble in tribbles)    
-                _spriteBatch.Draw(tribble.Texture, tribble.Bounds, Color.White);
-            
+
+            if (screen == Screen.Intro)
+            {
+                _spriteBatch.Draw(tribbleIntroTexture, new Rectangle(0, 0, 800, 500), Color.White);
+            }
+            else if (screen == Screen.TribbleYard)
+            {
+                foreach (Tribble tribble in tribbles)
+                    _spriteBatch.Draw(tribble.Texture, tribble.Bounds, Color.White);
+
+            }
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
