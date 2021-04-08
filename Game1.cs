@@ -14,14 +14,24 @@ namespace Monogame_3___Animations_Part_2_Lists
 
         Random generator;
 
+        Screen screen;
+
         Texture2D tribbleBrownTexture;
         Texture2D tribbleCreamTexture;
         Texture2D tribbleGreyTexture;
         Texture2D tribbleOrangeTexture;
 
-        List<Texture2D> tribbleTextures;
+        List<Texture2D> tribbleTextures; // To be used to select a random tribble
 
         List <Tribble> tribbles;
+
+        enum Screen
+        {
+            Intro,
+            TribbleYard
+        }
+
+
 
         public Game1()
         {
@@ -39,6 +49,7 @@ namespace Monogame_3___Animations_Part_2_Lists
         {
             // TODO: Add your initialization logic here
             generator = new Random();
+            screen = Screen.Intro;
 
             base.Initialize();
 
@@ -84,16 +95,14 @@ namespace Monogame_3___Animations_Part_2_Lists
             // TODO: Add your update logic here
             foreach(Tribble tribble in tribbles)
             {
-                tribble._rect.X += (int)tribble._speed.X;
-                tribble._rect.Y += (int)tribble._speed.Y;
-                if (tribble._rect.Right > _graphics.PreferredBackBufferWidth || tribble._rect.X < 0)
-                    tribble._speed.X *= -1;
-                if (tribble._rect.Bottom > _graphics.PreferredBackBufferHeight || tribble._rect.Y < 0)
-                    tribble._speed.Y *= -1;
-
+                tribble.move();
+                if (tribble.Bounds.Right > _graphics.PreferredBackBufferWidth || tribble.Bounds.Left < 0)
+                    tribble.bumpSide();
+                if (tribble.Bounds.Bottom > _graphics.PreferredBackBufferHeight || tribble.Bounds.Top < 0)
+                    tribble.bumpTopBottom();
             }
             
-            
+       
 
             base.Update(gameTime);
         }
@@ -105,7 +114,7 @@ namespace Monogame_3___Animations_Part_2_Lists
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             foreach(Tribble tribble in tribbles)    
-                _spriteBatch.Draw(tribble.Texture, tribble._rect, Color.White);
+                _spriteBatch.Draw(tribble.Texture, tribble.Bounds, Color.White);
             
             _spriteBatch.End();
 
