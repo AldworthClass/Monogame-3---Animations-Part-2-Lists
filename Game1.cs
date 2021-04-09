@@ -16,8 +16,6 @@ namespace Monogame_3___Animations_Part_2_Lists
 
         MouseState mouseState;
 
-        Screen screen;
-
         Texture2D tribbleBrownTexture;
         Texture2D tribbleCreamTexture;
         Texture2D tribbleGreyTexture;
@@ -34,6 +32,7 @@ namespace Monogame_3___Animations_Part_2_Lists
             TribbleYard
         }
 
+        Screen screen;
 
 
         public Game1()
@@ -66,7 +65,7 @@ namespace Monogame_3___Animations_Part_2_Lists
          
             for (int i = 0; i < 20; i++)
             {
-                int size = generator.Next(50, 100);
+                int size = generator.Next(50, 100); // Wee need the size of a tribble before we can assign it to a random location so it always appears on the screen
                 tribbles.Add(new Tribble(tribbleTextures[generator.Next(tribbleTextures.Count)], new Rectangle(generator.Next(_graphics.PreferredBackBufferWidth - size), generator.Next(_graphics.PreferredBackBufferHeight - size), size, size), new Vector2(generator.Next(-2, 3), generator.Next(-2, 3))));
             }
             
@@ -137,7 +136,6 @@ namespace Monogame_3___Animations_Part_2_Lists
             {
                 foreach (Tribble tribble in tribbles)
                     _spriteBatch.Draw(tribble.Texture, tribble.Bounds, Color.White);
-
             }
 
             _spriteBatch.End();
