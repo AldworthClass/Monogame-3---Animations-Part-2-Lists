@@ -39,7 +39,7 @@ namespace Monogame_3___Animations_Part_2_Lists
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            this.Window.Title = "Lesson 3 - Animation Part 2";
+            this.Window.Title = "Lesson Animation with Classes";
             IsMouseVisible = true;
 
             _graphics.PreferredBackBufferWidth = 800;  // set this value to the desired width of your window
@@ -56,13 +56,16 @@ namespace Monogame_3___Animations_Part_2_Lists
             base.Initialize();
 
             tribbles = new List<Tribble>();
+
+            // Adds textures to a list so a random one can be easily selected
             tribbleTextures = new List<Texture2D>(){
                 tribbleBrownTexture, 
                 tribbleCreamTexture, 
                 tribbleGreyTexture, 
                 tribbleOrangeTexture
             };
-         
+            
+            // Generates a list of 20 tribbles with random locations, speeds, textures and sizes
             for (int i = 0; i < 20; i++)
             {
                 int size = generator.Next(50, 100); // Wee need the size of a tribble before we can assign it to a random location so it always appears on the screen
@@ -83,10 +86,7 @@ namespace Monogame_3___Animations_Part_2_Lists
             tribbleBrownTexture = Content.Load<Texture2D>("tribbleBrown");
             tribbleCreamTexture = Content.Load<Texture2D>("tribbleCream");
             tribbleOrangeTexture = Content.Load<Texture2D>("tribbleOrange");
-            tribbleIntroTexture = Content.Load<Texture2D>("tribble_intro");
-            // Create a list of tribbles
-
-
+            tribbleIntroTexture = Content.Load<Texture2D>("tribble_intro");       
         }
 
         protected override void Update(GameTime gameTime)
@@ -104,20 +104,12 @@ namespace Monogame_3___Animations_Part_2_Lists
             else if (screen == Screen.TribbleYard)
             {
                 foreach (Tribble tribble in tribbles)
-                {
-                    tribble.move();
-                    if (tribble.Bounds.Right > _graphics.PreferredBackBufferWidth || tribble.Bounds.Left < 0)
-                        tribble.bumpSide();
-                    if (tribble.Bounds.Bottom > _graphics.PreferredBackBufferHeight || tribble.Bounds.Top < 0)
-                        tribble.bumpTopBottom();
-                }
+                    tribble.Move(_graphics);
+                
             }
 
             // TODO: Add your update logic here
             
-            
-       
-
             base.Update(gameTime);
         }
 
@@ -135,7 +127,7 @@ namespace Monogame_3___Animations_Part_2_Lists
             else if (screen == Screen.TribbleYard)
             {
                 foreach (Tribble tribble in tribbles)
-                    _spriteBatch.Draw(tribble.Texture, tribble.Bounds, Color.White);
+                    tribble.Draw(_spriteBatch);            
             }
 
             _spriteBatch.End();

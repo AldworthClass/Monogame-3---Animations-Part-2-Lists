@@ -20,19 +20,13 @@ namespace Monogame_3___Animations_Part_2_Lists
             _speed = speed;
         }
 
-        public void move()
+        public void Move(GraphicsDeviceManager graphics)
         {
             _rect.Offset(_speed);
-        }
-
-        public void bumpSide()
-        {
-            _speed.X *= -1;
-        }
-
-        public void bumpTopBottom()
-        {
-            _speed.Y *= -1;
+            if (_rect.Right > graphics.PreferredBackBufferWidth || _rect.Left < 0)
+                _speed.X *= -1;
+            if (_rect.Bottom > graphics.PreferredBackBufferHeight || _rect.Top < 0)
+                _speed.Y *= -1;
         }
 
         public Rectangle Bounds
@@ -44,6 +38,11 @@ namespace Monogame_3___Animations_Part_2_Lists
         public Texture2D Texture
         {
             get { return _texture; }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(_texture, _rect, Color.White);
         }
         //public Vector2 Speed
         //{
