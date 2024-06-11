@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 
 namespace Monogame_3___Animations_Part_2_Lists
 {
@@ -34,7 +34,6 @@ namespace Monogame_3___Animations_Part_2_Lists
         }
 
         Screen screen;
-
 
         public Game1()
         {
@@ -74,8 +73,6 @@ namespace Monogame_3___Animations_Part_2_Lists
                 tribbles.Add(new Tribble(tribbleTextures[generator.Next(tribbleTextures.Count)], new Rectangle(generator.Next(_graphics.PreferredBackBufferWidth - size), generator.Next(_graphics.PreferredBackBufferHeight - size), size, size), new Vector2(generator.Next(-2, 3), generator.Next(-2, 3))));
             }
             
-            
-
 
         }
 
@@ -107,6 +104,7 @@ namespace Monogame_3___Animations_Part_2_Lists
             {
                 foreach (Tribble tribble in tribbles)
                     tribble.Move(window);
+                Debug.WriteLine("Test");
                 
             }
 
