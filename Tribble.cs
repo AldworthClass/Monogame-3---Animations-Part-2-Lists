@@ -20,12 +20,12 @@ namespace Monogame_3___Animations_Part_2_Lists
             _speed = speed;
         }
 
-        public void Move(GraphicsDeviceManager graphics)
+        public void Move(Rectangle window)
         {
             _rect.Offset(_speed);
-            if (_rect.Right > graphics.PreferredBackBufferWidth || _rect.Left < 0)
+            if (_rect.Right > window.Width || _rect.Left < 0)
                 _speed.X *= -1;
-            if (_rect.Bottom > graphics.PreferredBackBufferHeight || _rect.Top < 0)
+            if (_rect.Bottom > window.Height || _rect.Top < 0)
                 _speed.Y *= -1;
         }
 

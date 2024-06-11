@@ -15,6 +15,7 @@ namespace Monogame_3___Animations_Part_2_Lists
         Random generator;
 
         MouseState mouseState;
+        Rectangle window;
 
         Texture2D tribbleBrownTexture;
         Texture2D tribbleCreamTexture;
@@ -42,8 +43,9 @@ namespace Monogame_3___Animations_Part_2_Lists
             this.Window.Title = "Lesson Animation with Classes";
             IsMouseVisible = true;
 
-            _graphics.PreferredBackBufferWidth = 800;  // set this value to the desired width of your window
-            _graphics.PreferredBackBufferHeight = 500;   // set this value to the desired height of your window
+            window = new Rectangle(0, 0, 800, 500);
+            _graphics.PreferredBackBufferWidth = window.Width;  // set this value to the desired width of your window
+            _graphics.PreferredBackBufferHeight = window.Height;   // set this value to the desired height of your window
             _graphics.ApplyChanges();
         }
 
@@ -104,7 +106,7 @@ namespace Monogame_3___Animations_Part_2_Lists
             else if (screen == Screen.TribbleYard)
             {
                 foreach (Tribble tribble in tribbles)
-                    tribble.Move(_graphics);
+                    tribble.Move(window);
                 
             }
 
@@ -122,7 +124,7 @@ namespace Monogame_3___Animations_Part_2_Lists
 
             if (screen == Screen.Intro)
             {
-                _spriteBatch.Draw(tribbleIntroTexture, new Rectangle(0, 0, 800, 500), Color.White);
+                _spriteBatch.Draw(tribbleIntroTexture, window, Color.White);
             }
             else if (screen == Screen.TribbleYard)
             {
